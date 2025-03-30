@@ -76,9 +76,21 @@ export async function generatePDF() {
             url: `https://${githubText}`,
         })
 
+        yPos += 5
+
+        // Add online CV link
+        doc.setTextColor(102, 102, 102)
+        doc.text("Online CV: ", leftMargin, yPos)
+        const onlineCVText = cvData.personal.onlineCV
+        doc.setTextColor(0, 102, 204)
+        doc.text(onlineCVText, leftMargin + doc.getTextWidth("Online CV: "), yPos)
+        doc.link(leftMargin + doc.getTextWidth("Online CV: "), yPos - 5, doc.getTextWidth(onlineCVText), 5, {
+            url: `https://${onlineCVText}`,
+        })
+
         doc.setTextColor(0, 0, 0)
 
-        yPos += 25
+        yPos += 20 // Adjusted spacing after adding the new link
 
         addSectionHeader(doc, "PERSONAL SUMMARY", leftMargin, yPos)
         yPos += 12
@@ -158,11 +170,14 @@ export async function generatePDF() {
                     yPos = topMargin
                 }
 
+                // Strip HTML tags for PDF
+                const plainResp = resp.replace(/<\/?span[^>]*>/g, "")
+
                 doc.setTextColor(51, 51, 51)
                 doc.text("•", leftMargin, yPos)
                 doc.setTextColor(85, 85, 85)
 
-                const respLines = doc.splitTextToSize(resp, pageWidth - 10)
+                const respLines = doc.splitTextToSize(plainResp, pageWidth - 10)
                 doc.text(respLines, leftMargin + 5, yPos)
 
                 yPos += respLines.length * 5 + 3
@@ -246,6 +261,15 @@ export async function generatePDF() {
             }
         }
 
+        // Add footer with online CV reference
+        const footerText = `For the most up-to-date version, visit: ${cvData.personal.onlineCV}`
+        doc.setFontSize(8)
+        doc.setTextColor(128, 128, 128)
+        doc.text(footerText, 105, 287, { align: "center" })
+        doc.link(105 - doc.getTextWidth(footerText) / 2, 287 - 3, doc.getTextWidth(footerText), 3, {
+            url: `https://${cvData.personal.onlineCV}`,
+        })
+
         doc.save(`${cvData.personal.firstName}_${cvData.personal.lastName}_CV.pdf`)
     } catch (error) {
         console.error("PDF generation error:", error)
@@ -271,4 +295,3 @@ function addSectionHeader(doc: jsPDF, title: string, x: number, y: number) {
     doc.setLineWidth(0.5)
     doc.line(x, y + 3, x + 170, y + 3)
 }
-
