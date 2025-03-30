@@ -50,6 +50,15 @@ export default function Resume() {
                   {cvData.personal.github}
                 </a>
               </p>
+              <p>
+                <span className="font-semibold">WWW:</span>{" "}
+                <a
+                    href={`https://${cvData.personal.portfolio}`}
+                    className="text-blue-600 hover:underline print:text-gray-800"
+                >
+                  {cvData.personal.portfolio}
+                </a>
+              </p>
             </div>
           </header>
 

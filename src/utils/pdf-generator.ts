@@ -80,12 +80,24 @@ export async function generatePDF() {
 
         // Add online CV link
         doc.setTextColor(102, 102, 102)
-        doc.text("Online CV: ", leftMargin, yPos)
+        doc.text("WWW: ", leftMargin, yPos)
         const onlineCVText = cvData.personal.onlineCV
         doc.setTextColor(0, 102, 204)
-        doc.text(onlineCVText, leftMargin + doc.getTextWidth("Online CV: "), yPos)
-        doc.link(leftMargin + doc.getTextWidth("Online CV: "), yPos - 5, doc.getTextWidth(onlineCVText), 5, {
+        doc.text(onlineCVText, leftMargin + doc.getTextWidth("WWW: "), yPos)
+        doc.link(leftMargin + doc.getTextWidth("WWW: "), yPos - 5, doc.getTextWidth(onlineCVText), 5, {
             url: `https://${onlineCVText}`,
+        })
+
+        yPos += 5
+
+        // Add portfolio link
+        doc.setTextColor(102, 102, 102)
+        doc.text("WWW: ", leftMargin, yPos)
+        const portfolioText = cvData.personal.portfolio
+        doc.setTextColor(0, 102, 204)
+        doc.text(portfolioText, leftMargin + doc.getTextWidth("WWW: "), yPos)
+        doc.link(leftMargin + doc.getTextWidth("WWW: "), yPos - 5, doc.getTextWidth(portfolioText), 5, {
+            url: `https://${portfolioText}`,
         })
 
         doc.setTextColor(0, 0, 0)
