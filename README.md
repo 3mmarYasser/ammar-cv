@@ -1,4 +1,4 @@
-# Ammar Yasser - Personal CV Website
+# Ammar Yasser - Personal CV Website.
 
 A modern, responsive personal CV website built with Next.js, showcasing my professional experience, skills, and achievements.
 
