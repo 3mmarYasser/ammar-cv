@@ -70,7 +70,7 @@ export const cvData = {
         },
         {
             title: "Full-Stack Developer | Mensa Philosophical Circle - Remote",
-            period: "Oct 2024 - Dec 2024",
+            period: "Oct 2023 - Dec 2024",
             responsibilities: [
                 "<span class='font-semibold'>Architected and delivered</span> a comprehensive education platform tailored for educational institutions, featuring customizable learning management modules that increased student engagement by 45%",
                 "<span class='font-semibold'>Optimized backend infrastructure</span> using NestJS and PostgreSQL with advanced indexing strategies, reducing response time by 20% and improving system reliability under peak loads",
