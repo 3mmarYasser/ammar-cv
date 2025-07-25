@@ -51,7 +51,7 @@ export default function Resume() {
                 </a>
               </p>
               <p>
-                <span className="font-semibold">WWW:</span>{" "}
+                <span className="font-semibold">Portfolio:</span>{" "}
                 <a
                     href={`https://${cvData.personal.portfolio}`}
                     className="text-blue-600 hover:underline print:text-gray-800"
