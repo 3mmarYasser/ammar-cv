@@ -76,7 +76,7 @@ export async function generatePDF() {
             { label: "Portfolio", url: cvData.personal.portfolio }
         ]
 
-        links.forEach((link, index) => {
+        links.forEach((link) => {
             doc.setTextColor(102, 102, 102)
             doc.text(`${link.label}: `, leftMargin, yPos)
             doc.setTextColor(0, 102, 204)
@@ -106,11 +106,11 @@ export async function generatePDF() {
         yPos += 8
 
         const colWidth = pageWidth / 2
-        cvData.skills.forEach((skill, index) => {
+        cvData.skills.forEach((skill) => {
             if (yPos > pageHeight - bottomMargin) {
                 doc.addPage()
                 yPos = topMargin
-                addPageHeader(doc, leftMargin, yPos)
+                addPageHeader(doc)
                 yPos += 15
             }
 
@@ -118,7 +118,8 @@ export async function generatePDF() {
             doc.setFont("helvetica", "normal")
 
             // Add subtle background for alternating rows
-            if (index % 2 === 0) {
+            const skillIndex = cvData.skills.indexOf(skill)
+            if (skillIndex % 2 === 0) {
                 doc.setFillColor(248, 248, 248)
                 doc.rect(leftMargin - 2, yPos - 2, pageWidth + 4, 8, "F")
             }
@@ -147,7 +148,7 @@ export async function generatePDF() {
         // Page 2: Work History with enhanced layout
         doc.addPage()
         yPos = topMargin
-        addPageHeader(doc, leftMargin, yPos)
+        addPageHeader(doc)
         yPos += 15
 
         addEnhancedSectionHeader(doc, "PROFESSIONAL EXPERIENCE", leftMargin, yPos)
@@ -157,7 +158,7 @@ export async function generatePDF() {
             if (yPos > pageHeight - bottomMargin - 60) {
                 doc.addPage()
                 yPos = topMargin
-                addPageHeader(doc, leftMargin, yPos)
+                addPageHeader(doc)
                 yPos += 15
             }
 
@@ -185,11 +186,11 @@ export async function generatePDF() {
             doc.setFont("helvetica", "normal")
             doc.setTextColor(85, 85, 85)
 
-            job.responsibilities.forEach((resp, respIndex) => {
+            job.responsibilities.forEach((resp) => {
                 if (yPos > pageHeight - bottomMargin) {
                     doc.addPage()
                     yPos = topMargin
-                    addPageHeader(doc, leftMargin, yPos)
+                    addPageHeader(doc)
                     yPos += 15
                 }
 
@@ -218,7 +219,7 @@ export async function generatePDF() {
         if (yPos > pageHeight - bottomMargin - 120) {
             doc.addPage()
             yPos = topMargin
-            addPageHeader(doc, leftMargin, yPos)
+            addPageHeader(doc)
             yPos += 15
         }
 
@@ -251,7 +252,7 @@ export async function generatePDF() {
         if (yPos + otherHeight > pageHeight - bottomMargin) {
             doc.addPage()
             yPos = topMargin
-            addPageHeader(doc, leftMargin, yPos)
+            addPageHeader(doc)
             yPos += 15
         }
         
@@ -262,7 +263,7 @@ export async function generatePDF() {
         if (yPos > pageHeight - bottomMargin - 100) {
             doc.addPage()
             yPos = topMargin
-            addPageHeader(doc, leftMargin, yPos)
+            addPageHeader(doc)
             yPos += 15
         }
 
@@ -322,7 +323,7 @@ export async function generatePDF() {
     }
 }
 
-function addPageHeader(doc: jsPDF, x: number, y: number) {
+function addPageHeader(doc: jsPDF) {
     // Add header accent bar for each page
     doc.setFillColor(51, 51, 51)
     doc.rect(0, 0, 210, 8, "F")
