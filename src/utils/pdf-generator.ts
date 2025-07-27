@@ -23,14 +23,41 @@ export async function generatePDF() {
         const bottomMargin = 35
 
         let yPos = topMargin
+        let currentPage = 1
 
-        // Page 1: Header and Personal Information
+        // Function to add page header
+        const addPageHeader = (pageNum: number) => {
+            // Header accent bar
+            doc.setFillColor(51, 51, 51)
+            doc.rect(0, 0, 210, 3, "F")
+            
+            // Page number
+            doc.setFontSize(8)
+            doc.setFont("helvetica", "normal")
+            doc.setTextColor(128, 128, 128)
+            doc.text(`Page ${pageNum}`, 210 - rightMargin - 20, 8)
+            
+            // Reset yPos for content
+            yPos = topMargin
+        }
+
+        // Function to check and add new page
+        const checkAndAddPage = () => {
+            if (yPos > pageHeight - bottomMargin) {
+                doc.addPage()
+                currentPage++
+                addPageHeader(currentPage)
+                return true
+            }
+            return false
+        }
+
+        // Set white background
         doc.setFillColor(255, 255, 255)
         doc.rect(0, 0, 210, 297, "F")
 
-        // Add header accent bar
-        doc.setFillColor(51, 51, 51)
-        doc.rect(0, 0, 210, 8, "F")
+        // Add first page header
+        addPageHeader(currentPage)
 
         // Header Section with better visual hierarchy
         doc.setFontSize(26)
@@ -45,30 +72,28 @@ export async function generatePDF() {
         doc.setFont("helvetica", "normal")
         doc.setTextColor(102, 102, 102)
         doc.text(cvData.personal.title, leftMargin, yPos)
-        yPos += 5
+        yPos += 6
 
-        // Contact Information - Organized in a grid layout
-        doc.setFontSize(9)
+        // Contact Information - Professional layout
+        doc.setFontSize(8)
         doc.setTextColor(102, 102, 102)
 
-        // First row: Email and Phone
         const email = cvData.personal.email
         doc.text(email, leftMargin, yPos)
-        doc.link(leftMargin, yPos - 4, doc.getTextWidth(email), 4, { url: `mailto:${email}` })
+        doc.link(leftMargin, yPos - 3, doc.getTextWidth(email), 3, { url: `mailto:${email}` })
 
         const phone = cvData.personal.phone
         doc.text(" | " + phone, leftMargin + doc.getTextWidth(email), yPos)
-        doc.link(leftMargin + doc.getTextWidth(email) + doc.getTextWidth(" | "), yPos - 4, doc.getTextWidth(phone), 4, {
+        doc.link(leftMargin + doc.getTextWidth(email) + doc.getTextWidth(" | "), yPos - 3, doc.getTextWidth(phone), 3, {
             url: `tel:${phone}`,
         })
 
-        yPos += 4
+        yPos += 3
 
-        // Second row: Location
         doc.text(cvData.personal.location, leftMargin, yPos)
         yPos += 4
 
-        // Links in organized format
+        // Links in a compact, organized format
         const links = [
             { label: "LinkedIn", url: cvData.personal.linkedin },
             { label: "GitHub", url: cvData.personal.github },
@@ -81,17 +106,17 @@ export async function generatePDF() {
             doc.text(`${link.label}: `, leftMargin, yPos)
             doc.setTextColor(0, 102, 204)
             doc.text(link.url, leftMargin + doc.getTextWidth(`${link.label}: `), yPos)
-            doc.link(leftMargin + doc.getTextWidth(`${link.label}: `), yPos - 4, doc.getTextWidth(link.url), 4, {
+            doc.link(leftMargin + doc.getTextWidth(`${link.label}: `), yPos - 3, doc.getTextWidth(link.url), 3, {
                 url: `https://${link.url}`,
             })
-            yPos += 3
+            yPos += 2.5
         })
 
         doc.setTextColor(0, 0, 0)
         yPos += 12
 
-        // Personal Summary with enhanced styling
-        addEnhancedSectionHeader(doc, "PERSONAL SUMMARY", leftMargin, yPos)
+        // Personal Summary with better spacing
+        addSectionHeader(doc, "PERSONAL SUMMARY", leftMargin, yPos)
         yPos += 8
 
         const summaryLines = doc.splitTextToSize(cvData.summary, pageWidth)
@@ -99,74 +124,60 @@ export async function generatePDF() {
         doc.setFont("helvetica", "normal")
         doc.setTextColor(85, 85, 85)
         doc.text(summaryLines, leftMargin, yPos)
-        yPos += summaryLines.length * 4 + 10
+        yPos += summaryLines.length * 3.5 + 6
 
-        // Skills Section - Better organized with visual separation
-        addEnhancedSectionHeader(doc, "TECHNICAL SKILLS", leftMargin, yPos)
+        // Skills Section - Enhanced layout
+        addSectionHeader(doc, "SKILLS", leftMargin, yPos)
         yPos += 8
 
         const colWidth = pageWidth / 2
         cvData.skills.forEach((skill) => {
-            if (yPos > pageHeight - bottomMargin) {
-                doc.addPage()
-                yPos = topMargin
-                addPageHeader(doc)
-                yPos += 15
-            }
+            checkAndAddPage()
 
-            doc.setFontSize(9)
+            doc.setFontSize(8)
             doc.setFont("helvetica", "normal")
-
-            // Add subtle background for alternating rows
-            const skillIndex = cvData.skills.indexOf(skill)
-            if (skillIndex % 2 === 0) {
-                doc.setFillColor(248, 248, 248)
-                doc.rect(leftMargin - 2, yPos - 2, pageWidth + 4, 8, "F")
-            }
 
             doc.setTextColor(51, 51, 51)
             doc.text("•", leftMargin, yPos)
             doc.setTextColor(85, 85, 85)
 
-            const leftLines = doc.splitTextToSize(skill.left, colWidth - 8)
-            doc.text(leftLines, leftMargin + 4, yPos)
+            const leftLines = doc.splitTextToSize(skill.left, colWidth - 6)
+            doc.text(leftLines, leftMargin + 3, yPos)
 
             doc.setTextColor(51, 51, 51)
             doc.text("•", leftMargin + colWidth, yPos)
             doc.setTextColor(85, 85, 85)
 
-            const rightLines = doc.splitTextToSize(skill.right, colWidth - 8)
-            doc.text(rightLines, leftMargin + colWidth + 4, yPos)
+            const rightLines = doc.splitTextToSize(skill.right, colWidth - 6)
+            doc.text(rightLines, leftMargin + colWidth + 3, yPos)
 
-            const leftHeight = leftLines.length * 4
-            const rightHeight = rightLines.length * 4
-            yPos += Math.max(leftHeight, rightHeight) + 3
+            const leftHeight = leftLines.length * 3.5
+            const rightHeight = rightLines.length * 3.5
+            yPos += Math.max(leftHeight, rightHeight) + 1.5
         })
 
-        yPos += 8
+        yPos += 4
 
-        // Page 2: Work History with enhanced layout
+        // Work History - New page with professional layout
         doc.addPage()
-        yPos = topMargin
-        addPageHeader(doc)
-        yPos += 15
+        currentPage++
+        addPageHeader(currentPage)
 
-        addEnhancedSectionHeader(doc, "PROFESSIONAL EXPERIENCE", leftMargin, yPos)
+        addSectionHeader(doc, "WORK HISTORY", leftMargin, yPos)
         yPos += 8
 
-        cvData.workHistory.forEach((job, jobIndex) => {
+        cvData.workHistory.forEach((job) => {
             if (yPos > pageHeight - bottomMargin - 60) {
                 doc.addPage()
-                yPos = topMargin
-                addPageHeader(doc)
-                yPos += 15
+                currentPage++
+                addPageHeader(currentPage)
             }
 
             // Job title with enhanced styling
             doc.setFontSize(11)
             doc.setFont("helvetica", "bold")
             doc.setTextColor(51, 51, 51)
-            const titleLines = doc.splitTextToSize(job.title, pageWidth - 35)
+            const titleLines = doc.splitTextToSize(job.title, pageWidth - 30)
             doc.text(titleLines, leftMargin, yPos)
 
             // Period with right alignment
@@ -174,25 +185,15 @@ export async function generatePDF() {
             doc.setTextColor(102, 102, 102)
             doc.text(job.period, 210 - rightMargin - doc.getTextWidth(job.period), yPos)
 
-            yPos += titleLines.length * 5 + 3
+            yPos += titleLines.length * 4 + 2
 
-            // Add subtle separator line
-            doc.setDrawColor(220, 220, 220)
-            doc.setLineWidth(0.3)
-            doc.line(leftMargin, yPos, leftMargin + pageWidth, yPos)
-            yPos += 4
-
-            doc.setFontSize(9)
+            // Responsibilities with better organization
+            doc.setFontSize(8)
             doc.setFont("helvetica", "normal")
             doc.setTextColor(85, 85, 85)
 
             job.responsibilities.forEach((resp) => {
-                if (yPos > pageHeight - bottomMargin) {
-                    doc.addPage()
-                    yPos = topMargin
-                    addPageHeader(doc)
-                    yPos += 15
-                }
+                checkAndAddPage()
 
                 // Strip HTML tags for PDF
                 const plainResp = resp.replace(/<\/?span[^>]*>/g, "")
@@ -201,77 +202,69 @@ export async function generatePDF() {
                 doc.text("•", leftMargin, yPos)
                 doc.setTextColor(85, 85, 85)
 
-                const respLines = doc.splitTextToSize(plainResp, pageWidth - 8)
-                doc.text(respLines, leftMargin + 4, yPos)
+                const respLines = doc.splitTextToSize(plainResp, pageWidth - 6)
+                doc.text(respLines, leftMargin + 3, yPos)
 
-                yPos += respLines.length * 4 + 2
+                yPos += respLines.length * 3.5 + 1.5
             })
 
-            yPos += 8
-
-            // Add space between jobs
-            if (jobIndex < cvData.workHistory.length - 1) {
-                yPos += 4
-            }
+            yPos += 6
         })
 
-        // Page 3: Education, Other, and Languages
+        // Education and Other sections - New page for better organization
         if (yPos > pageHeight - bottomMargin - 120) {
             doc.addPage()
-            yPos = topMargin
-            addPageHeader(doc)
-            yPos += 15
+            currentPage++
+            addPageHeader(currentPage)
         }
 
-        addEnhancedSectionHeader(doc, "EDUCATION", leftMargin, yPos)
+        addSectionHeader(doc, "EDUCATION", leftMargin, yPos)
         yPos += 8
 
         doc.setFontSize(11)
         doc.setFont("helvetica", "bold")
         doc.setTextColor(51, 51, 51)
         doc.text(cvData.education.institution, leftMargin, yPos)
-        yPos += 5
+        yPos += 4
 
-        doc.setFontSize(9)
+        doc.setFontSize(8)
         doc.setFont("helvetica", "normal")
         doc.setTextColor(85, 85, 85)
         doc.text(cvData.education.degree, leftMargin, yPos)
-        yPos += 12
+        yPos += 10
 
-        // Other section with better formatting
-        addEnhancedSectionHeader(doc, "ADDITIONAL ACHIEVEMENTS", leftMargin, yPos)
+        // Other section - Enhanced layout for longer content
+        addSectionHeader(doc, "OTHER", leftMargin, yPos)
         yPos += 8
 
         const otherLines = doc.splitTextToSize(cvData.other, pageWidth)
-        doc.setFontSize(9)
+        doc.setFontSize(8)
         doc.setFont("helvetica", "normal")
         doc.setTextColor(85, 85, 85)
         
         // Check if we need a new page for the "OTHER" section
-        const otherHeight = otherLines.length * 4
+        const otherHeight = otherLines.length * 3.5
         if (yPos + otherHeight > pageHeight - bottomMargin) {
             doc.addPage()
-            yPos = topMargin
-            addPageHeader(doc)
-            yPos += 15
+            currentPage++
+            addPageHeader(currentPage)
         }
         
         doc.text(otherLines, leftMargin, yPos)
-        yPos += otherLines.length * 4 + 10
+        yPos += otherLines.length * 3.5 + 6
 
-        // Languages section with enhanced visual
+        // Languages section - Enhanced layout
         if (yPos > pageHeight - bottomMargin - 100) {
             doc.addPage()
-            yPos = topMargin
-            addPageHeader(doc)
-            yPos += 15
+            currentPage++
+            addPageHeader(currentPage)
         }
 
-        addEnhancedSectionHeader(doc, "LANGUAGES", leftMargin, yPos)
+        addSectionHeader(doc, "LANGUAGES", leftMargin, yPos)
         yPos += 8
 
         for (const language of cvData.languages) {
-            doc.setFontSize(10)
+            doc.setFontSize(9)
             doc.setFont("helvetica", "bold")
             doc.setTextColor(51, 51, 51)
             doc.text(language.name, leftMargin, yPos)
@@ -279,17 +272,17 @@ export async function generatePDF() {
             doc.setTextColor(85, 85, 85)
 
             if (language.name === "Arabic") {
-                doc.text(language.level, leftMargin + 35, yPos)
-                yPos += 8
+                doc.text(language.level, leftMargin + 30, yPos)
+                yPos += 6
             } else {
                 doc.text(language.level, 210 - rightMargin - doc.getTextWidth(language.level), yPos)
-                yPos += 4
+                yPos += 3
 
                 // Enhanced proficiency bars
                 for (let i = 0; i < 5; i++) {
-                    const barX = leftMargin + i * 20
-                    const barWidth = 18
-                    const barHeight = 3
+                    const barX = leftMargin + i * 18
+                    const barWidth = 16
+                    const barHeight = 2.5
 
                     if (i < language.proficiency) {
                         doc.setFillColor(51, 51, 51)
@@ -300,16 +293,22 @@ export async function generatePDF() {
                     doc.rect(barX, yPos, barWidth, barHeight, "F")
                 }
 
-                yPos += 6
-                doc.setFontSize(9)
+                yPos += 5
+                doc.setFontSize(8)
                 doc.setTextColor(85, 85, 85)
                 doc.text(language.display, leftMargin, yPos)
-                yPos += 8
+                yPos += 6
             }
         }
 
-        // Enhanced footer
-        addEnhancedFooter(doc, cvData.personal.onlineCV, pageHeight)
+        // Enhanced footer with better positioning
+        const footerText = `For the most up-to-date version, visit: ${cvData.personal.onlineCV}`
+        doc.setFontSize(7)
+        doc.setTextColor(128, 128, 128)
+        doc.text(footerText, 105, pageHeight - 15, { align: "center" })
+        doc.link(105 - doc.getTextWidth(footerText) / 2, pageHeight - 18, doc.getTextWidth(footerText), 3, {
+            url: `https://${cvData.personal.onlineCV}`,
+        })
 
         doc.save(`${cvData.personal.firstName}_${cvData.personal.lastName}_CV.pdf`)
     } catch (error) {
@@ -323,45 +322,18 @@ export async function generatePDF() {
     }
 }
 
-function addPageHeader(doc: jsPDF) {
-    // Add header accent bar for each page
-    doc.setFillColor(51, 51, 51)
-    doc.rect(0, 0, 210, 8, "F")
-}
-
-function addEnhancedSectionHeader(doc: jsPDF, title: string, x: number, y: number) {
+function addSectionHeader(doc: jsPDF, title: string, x: number, y: number) {
     // Enhanced section header with better visual design
     doc.setFillColor(51, 51, 51)
-    doc.circle(x + 2, y - 1, 2, "F")
+    doc.circle(x + 1.5, y - 1, 1.5, "F")
 
     doc.setFontSize(11)
     doc.setFont("helvetica", "bold")
     doc.setTextColor(51, 51, 51)
-    doc.text(title, x + 10, y)
+    doc.text(title, x + 8, y)
 
     // Enhanced underline
-    doc.setDrawColor(51, 51, 51)
-    doc.setLineWidth(1)
-    doc.line(x, y + 2, x + 170, y + 2)
-    
-    // Add subtle background
-    doc.setFillColor(248, 248, 248)
-    doc.rect(x - 2, y - 3, 180, 8, "F")
-}
-
-function addEnhancedFooter(doc: jsPDF, onlineCV: string, pageHeight: number) {
-    // Enhanced footer with better styling
-    const footerText = `For the most up-to-date version, visit: ${onlineCV}`
-    
-    // Footer background
-    doc.setFillColor(248, 248, 248)
-    doc.rect(0, pageHeight - 15, 210, 15, "F")
-    
-    // Footer text
-    doc.setFontSize(8)
-    doc.setTextColor(102, 102, 102)
-    doc.text(footerText, 105, pageHeight - 8, { align: "center" })
-    doc.link(105 - doc.getTextWidth(footerText) / 2, pageHeight - 11, doc.getTextWidth(footerText), 3, {
-        url: `https://${onlineCV}`,
-    })
+    doc.setDrawColor(200, 200, 200)
+    doc.setLineWidth(0.8)
+    doc.line(x, y + 1.5, x + 170, y + 1.5)
 }
