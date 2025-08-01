@@ -72,7 +72,7 @@ export const cvData = {
         },
         {
             title: "Principal Full-Stack Engineer | iHealth and Wellness Foundation - Remote",
-            period: "Feb 2025 - Current",
+            period: "Feb 2025 - Aug 2025",
             responsibilities: [
                 "<span class='font-semibold'>Spearheaded the development</span> of the Education platform for iHealth, establishing a microservices architecture that improved <span class='font-semibold'>scalability by 200% and decreased latency by 40%</span>.",
                 "<span class='font-semibold'>Architected and executed</span> a comprehensive full-stack solution, seamlessly integrating <span class='font-semibold'>React and Next.js frontend</span> with a <span class='font-semibold'>Node.js/Express backend</span>, resulting in a 35% improvement in application performance.",
