@@ -23,7 +23,7 @@ export const cvData = {
             right: "AWS Serverless (Lambda, API Gateway), Azure Functions, Cloud Architecture",
         },
         {
-            left: "React.js (Redux, Hooks, Context), Vue.js, Angular, Next.js",
+            left: "React.js (Redux, Hooks, Context), React Native, Vue.js, Angular, Next.js",
             right: "Frontend Architecture, Performance Optimization, PWA Development",
         },
         {
