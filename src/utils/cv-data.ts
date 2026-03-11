@@ -8,8 +8,8 @@ export const cvData = {
         location: "Alexandria",
         linkedin: "linkedin.com/in/ammar-yasseer",
         github: "github.com/3mmarYasser",
-        onlineCV: "resume.ammar-yasser.me",
-        portfolio: "ammar-yasser.me",
+        onlineCV: "resume.ammar-yasseer.com",
+        portfolio: "ammar-yasseer.com",
     },
     summary:
         "Experienced with complex full stack development, combining robust back-end logic with intuitive front-end interfaces. Proven track record of architecting and delivering high-performance, scalable web applications using modern frameworks and libraries. Expert in integrating APIs, optimizing database performance, and implementing security best practices to ensure data integrity and exceptional user experience. Skilled in leading technical teams and collaborating across departments to align development efforts with business objectives.",
