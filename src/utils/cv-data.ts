@@ -15,8 +15,8 @@ export const cvData = {
         "Experienced with complex full stack development, combining robust back-end logic with intuitive front-end interfaces. Proven track record of architecting and delivering high-performance, scalable web applications using modern frameworks and libraries. Expert in integrating APIs, optimizing database performance, and implementing security best practices to ensure data integrity and exceptional user experience. Skilled in leading technical teams and collaborating across departments to align development efforts with business objectives.",
     skills: [
         {
-            left: "JavaScript (ES6+)/TypeScript Expert, Python, C++, Go, Rust",
-            right: "Node.js, Express.js, NestJS, FastAPI, Microservices Architecture",
+            left: "JavaScript (ES6+)/TypeScript Expert, Python (Django, FastAPI), C++, Go, Rust",
+            right: "Node.js, Express.js, NestJS, Microservices Architecture",
         },
         {
             left: "RESTful API Architecture, GraphQL Schema Design, gRPC",
@@ -32,7 +32,7 @@ export const cvData = {
         },
         {
             left: "Docker, Kubernetes, CI/CD (GitHub Actions, Jenkins, GitLab CI)",
-            right: "DevOps, Infrastructure as Code (Terraform), AWS/Azure/GCP, Monitoring",
+            right: "DevOps, IaC (Terraform), AWS/Azure/GCP, Monitoring & Observability (Prometheus, Grafana, CloudWatch, Datadog, Sentry, ELK/OpenSearch)",
         },
         {
             left: "System Design, Microservice Communication Patterns, Event-Driven Architecture",
