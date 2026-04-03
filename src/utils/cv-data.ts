@@ -12,7 +12,7 @@ export const cvData = {
         portfolio: "ammar-yasseer.com",
     },
     summary:
-        "Experienced with complex full stack development, combining robust back-end logic with intuitive front-end interfaces. Proven track record of architecting and delivering high-performance, scalable web applications using modern frameworks and libraries. Expert in integrating APIs, optimizing database performance, and implementing security best practices to ensure data integrity and exceptional user experience. Skilled in leading technical teams and collaborating across departments to align development efforts with business objectives.",
+        "Principal Full-Stack Engineer with 6+ years of experience, including 2.5+ years in Principal-level roles. Experienced with complex full stack development, combining robust back-end logic with intuitive front-end interfaces. Proven track record of architecting and delivering high-performance, scalable web applications using modern frameworks and libraries. Expert in integrating APIs, optimizing database performance, and implementing security best practices to ensure data integrity and exceptional user experience. Skilled in leading technical teams and collaborating across departments to align development efforts with business objectives.",
     skills: [
         {
             left: "JavaScript (ES6+)/TypeScript Expert, Python (Django, FastAPI), C++, Go, Rust",
@@ -82,7 +82,7 @@ export const cvData = {
             ],
         },
         {
-            title: "Web Developer | Freelance Web Developer",
+            title: "Principal Full-Stack Engineer | Freelance (Self-Employed)",
             period: "Jan 2020 - Current",
             responsibilities: [
                 "<span class='font-semibold'>Designed and developed</span> 15+ high-performing web applications that transformed client workflows, resulting in an average 40% increase in operational efficiency",
